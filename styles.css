@@ -1,60 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+
+:root{
+--primary-color :#ECC5FB;
+--secondary-color:#A66CFF;
+}
+
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body{
+    background-color: var(--primary-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+header{
+    padding: 1rem;
+    display: flex;
+    justify-content:space-around;
+    background-color: var(--secondary-color)
+    
+
+}
+
+.search{
+    background-color:transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 20px;
+    padding: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.search:focus{
+    outline: none;
+    background-color: #FFE3E1;
+}
+
+main{
     display: flex;
     justify-content: center;
-    height: 100vh;
+    flex-wrap: wrap;
+    
+}
+
+.movie{
+    width: 350px;
+    margin: 1rem;
+    background-color: var(--secondary-color);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+
+}
+
+.movie img{
+    width: 100%;
+    
+}
+
+.movie-info{
+    color: #eee;
+    display: flex;
     align-items: center;
-    text-align: center;
-    background-color: #D61C4E;
+    justify-content: space-between;
+    padding: 0.5rem 1rem 1rem;
+    letter-spacing: 0.5px;
+
 }
 
-.form{
-    background-color: #F7EDDB;
-    padding: 15vh;
-    width: 20%;
-    box-shadow:0 4vh 8vh  #000;
-    border-radius: 2vh;
-    margin: 2%;
+.movie-info span{
+    background-color: var(--primary-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-weight: bold;
 }
 
-.score{
-    text-align: center;
-    padding: 3%;
-    margin: 2%;
+.movie-info span.green{
+    color: lightgreen;
 }
 
-
-.input{
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-    text-align: center;
-    padding: 0.50rem;
-    border:  solid 2px black;
+.movie-info span.orange{
+    color: orange;
 }
 
-.input::placeholder{
-    color: lightgray;
-    font-family: cursive;
+.movie-info span.red{
+    color: red;
 }
 
-.btn{
-
-    background-color: #D61C4E ;
-    color: white;
-    display: block;
-    width: 100%;
-    padding: 5%;
-    margin: 5% 0;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+.overview{
+    background-color: #FFF5E4;
+    padding: 1rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    max-height: 100%;
+    transform: translateY(101%);
+    transition: transform 0.3s ease-in;
 }
 
-.btn:hover {background-color: #EC7272}
+.movie:hover .overview{
+    transform: translateY(0);
+}
 

@@ -1,67 +1,73 @@
-/*Generate a  random number using random() */
+const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.des&api_key=60a23d17752e09d68bf7b538e9292802&page=4';
 
-let number1 = Math.random()*10;
-number1 = Math.floor(number1)+1;
+const IMG_PATH = 'https://image.tmdb.org/t/p/w500'
 
-let number2 = Math.random()*10;
-number2 = Math.floor(number2)+1;
-let formElement = document.getElementById("form");
+const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=60a23d17752e09d68bf7b538e9292802&query="'
 
-/* Select the questionElement by using getElementById() */
-let questioElement = document.getElementById("question").innerHTML="What is " + number1 + " x " + number2 +"?"
+const form = document.getElementById('form');
+const search = document.getElementById('search');
+const main = document.getElementById('main');
 
-/* Calculate the correct answer to compare the answer submitted by user */ 
-let correctAnswer = number1 * number2 ;
 
-/* Get user input */
-let inputElement = document.getElementById("input");
+getMovies(API_URL);
 
-/* Select Score element */
+async function getMovies(url) {
+    const res = await fetch(url)
+    const data = await res.json()
 
-let score = document.getElementById("score");
-
-let reset = document.getElementById("reset");
-
-let marks1 = JSON.parse(localStorage.getItem("Marks"));
-
-if(!marks1){
-    marks1=0;
+    showMovies(data.results);
 }
- 
-score.innerHTML ="Score : " + marks1;
-/*Add event listener to submit button*/
 
-formElement.addEventListener("submit",submitFunction);
 
-function submitFunction(){
-    let userAnswer = +inputElement.value;
-   
+function showMovies(movies){
 
-    if( userAnswer === correctAnswer){  
+    main.innerHTML = '';
 
-        marks1++ ;
-        updateLocalStorage();
-    }else{
-       marks1-- ; 
-        updateLocalStorage();
+    movies.forEach(movie => {
+
+        const { title, poster_path, vote_average, overview } = movie;
+
+        const movieEl = document.createElement('div');
+
+        movieEl.classList.add('movie');
+
+        movieEl.innerHTML = `
+        <img src="${IMG_PATH + poster_path}" alt="${title}" srcset="">
+        <div class="movie-info">
+            <h3>${title}</h3>
+            <span class="${getClassByRate(vote_average)}">${vote_average}</span>
+        </div>
+        <div class="overview">
+            <h3>Overview</h3>
+                ${overview}
+        </div>
+    
+          `
+        main.appendChild(movieEl);
+    });
+}
+
+function getClassByRate(vote) {
+    if (vote >= 8) {
+        return 'green'
+    } else if (vote >= 5) {
+        return 'orange'
+    } else {
+        return 'red'
     }
-}
 
-function updateLocalStorage(){
-    localStorage.setItem("Marks",JSON.stringify(marks1));
 }
 
 
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-reset.addEventListener("click",resetFunction);
+    const searchTerm = search.value;
 
- function resetFunction(){
-    localStorage.clear();
-    marks1 = 0;
-    score.innerHTML ="Score : " + marks1;
- }
-
-
-
-
-
+    if (searchTerm && searchTerm !== '') {
+        getMovies(SEARCH_API + searchTerm)
+        search.value = ''
+    } else {
+        window.location.reload()
+    }
+})
